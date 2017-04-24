@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import timedelta
 import numpy as np
 import matplotlib.pyplot as plt
-action8=pd.read_csv(u'D:/Competition/JD/JNEWdata/action8.csv')
+action8=pd.read_csv(u'/home/javis/jd2017/jdata/action8.csv',low_memory=False)
 action8['time']=pd.to_datetime(action8['time'],format='%Y/%m/%d %H:%M:%S')
 action8['date']=pd.to_datetime(action8['date'],format='%Y/%m/%d')
 
@@ -29,5 +29,5 @@ train_before6=pd.DataFrame(train_before6)
 train_before6=train_before6[train_before6['flag']==1]
 #融合得到所有需要的用户
 train=pd.concat([train_end,train_before6])[['user_id']].drop_duplicates()
-#train里user的行为
-action_user=pd.merge(train,action8,on='user_id',how='left')
+
+train.to_csv(u'/home/javis/jd2017/jdata/selected_user.csv',index=False)
