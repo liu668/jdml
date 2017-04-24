@@ -15,7 +15,7 @@ user_path = "/home/javis/jd2017/jdata/JData_User.csv"
 
 comment_date = ["2016/02/06", "2016/02/12", "2016/02/19", "2016/2/26", "2016/03/04", "2016/03/11", "2016/03/18",
                 "2016/03/25", "2016/04/01",
-                "2016/04/08", "2016/04/15"]
+                "2016/04/08"]
 
 
 def convert_age(age_str):
@@ -55,15 +55,6 @@ def get_basic_product_feat():
 
 #dump_path = u'/home/javis/jd2017/jdata/action8.csv' % (start_date, end_date)
 
-def get_action_feat(start_date, end_date):
-    actions = get_actions(start_date, end_date)
-    actions = actions[['user_id', 'sku_id', 'type']]
-    df = pd.get_dummies(actions['type'], prefix='%s-%s-action' % (start_date, end_date))
-    actions = pd.concat([actions, df], axis=1)  # type: pd.DataFrame
-    actions = actions.groupby(['user_id', 'sku_id'], as_index=False).sum()
-    del actions['type']
-    actions.to_csv("/home/javis/jd2017/lwb/jd1/jd/cache/basic_action_feat")
-
 def get_comments_product_feat(start_date, end_date):
     comments = pd.read_csv(comment_path)
     comment_date_end = end_date
@@ -81,43 +72,32 @@ def get_comments_product_feat(start_date, end_date):
     comments.to_csv("/home/javis/jd2017/lwb/jd1/jd/cache/comments_feat")
     
 
-def make_train_set(train_start_date, train_end_date, test_start_date, test_end_date, days=30):
+def make_train_set(train_start_date, train_end_date, test_start_date, test_end_date):
     start_days = "2016/02/05"
     user = get_basic_user_feat()
     product = get_basic_product_feat()
-    product_acc = get_accumulate_product_feat(start_days, train_end_date)
     comment_acc = get_comments_product_feat(train_start_date, train_end_date)
 
     # generate 时间窗口
     # actions = get_accumulate_action_feat(train_start_date, train_end_date)
     actions = None
-    for i in (1, 2, 3, 5, 7, 10, 15, 21, 30):
+    for i in (1, 2, 3, 4, 5, 6, 7):
         start_days = datetime.strptime(train_end_date, '%Y/%m/%d') - timedelta(days=i)
         start_days = start_days.strftime('%Y/%m/%d')
-        if actions is None:
-            actions = get_action_feat(start_days, train_end_date)
-        else:
-            actions = pd.merge(actions, get_action_feat(start_days, train_end_date), how='left',
-                                on=['user_id', 'sku_id'])
-
     actions = pd.merge(actions, user, how='left', on='user_id')
-    actions = pd.merge(actions, user_acc, how='left', on='user_id')
     actions = pd.merge(actions, product, how='left', on='sku_id')
-    actions = pd.merge(actions, product_acc, how='left', on='sku_id')
     actions = pd.merge(actions, comment_acc, how='left', on='sku_id')
     actions = actions.fillna(0)
-
-    users = actions[['user_id', 'sku_id']].copy()
+    
     del actions['user_id']
     del actions['sku_id']
 
-    return users, actions,
+    return actions,
 
 def make_test_set(train_start_date, train_end_date):
     start_days = "2016/02/05"
     user = get_basic_user_feat()
     product = get_basic_product_feat()
-    product_acc = get_accumulate_product_feat(start_days, train_end_date)
     comment_acc = get_comments_product_feat(train_start_date, train_end_date)
         #labels = get_labels(test_start_date, test_end_date)
 
@@ -127,15 +107,8 @@ def make_test_set(train_start_date, train_end_date):
     for i in (1, 2, 3, 5, 4, 5, 6, 7):
         start_days = datetime.strptime(train_end_date, '%Y/%m/%d') - timedelta(days=i)
         start_days = start_days.strftime('%Y/%m/%d')
-        if actions is None:
-            actions = get_action_feat(start_days, train_end_date)
-        else:
-            actions = pd.merge(actions, get_action_feat(start_days, train_end_date), how='left',
-                                on=['user_id', 'sku_id'])
-
     actions = pd.merge(actions, user, how='left', on='user_id')
     actions = pd.merge(actions, product, how='left', on='sku_id')
-    actions = pd.merge(actions, product_acc, how='left', on='sku_id')
     actions = pd.merge(actions, comment_acc, how='left', on='sku_id')
     #actions = pd.merge(actions, labels, how='left', on=['user_id', 'sku_id'])
     actions = actions.fillna(0)
