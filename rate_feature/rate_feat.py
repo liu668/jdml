@@ -7,11 +7,12 @@ from datetime import timedelta
 
 
 action_path = "/home/javis/jd2017/jdata/JData_Action_201604.csv"
-start_date="2016/4/2"
-end_date="2016/4/8"
 actions = pd.read_csv(action_path)
 feature = ['user_id', 'a_rate_total_type4_1', 'a_rate_total_type4_2', 'a_rate_total_type4_3',
                'a_rate_total_type4_5', 'a_rate_total_type4_6']
+actions.time=pd.to_datetime(actions['date'],format='%Y/%m/%d')
+start_date=datetime(2016,4,2)
+end_date=datetime(2016,4,8)
 actions = actions[(actions.time >= start_date) & (actions.time < end_date)]
 df = pd.get_dummies(actions['type'], prefix='action')
 actions = pd.concat([actions['user_id'], df], axis=1)
