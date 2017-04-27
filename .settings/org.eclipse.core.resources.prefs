@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//DecisionTree/DecisionTree.py=utf-8
+encoding//DecisionTree/draw.py=utf-8
 encoding//before_k_user_brand/user.py=utf-8
 encoding//clean_data/select_user.py=utf-8
 encoding//comments_feature/comment_fet.py=UTF-8
