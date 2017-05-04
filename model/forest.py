@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn import cross_validation
 from sklearn import ensemble
 
+action = "/home/javis/jd2017/jdata/all_train_new430.csv"
+
 def get_from_jdata_csv(csv):
     train =  pd.read_csv(csv,header=0)
     train.fillna(0,inplace=True)
@@ -17,12 +19,14 @@ def load_data_regressiong(data):
 
 def test_RandomForestRegressor(*data):
     test=pd.read_csv("/home/javis/jd2017/jdata/all_test_new429.csv")
-    test.fillna(0,inplace=True)    
+    test.fillna(0,inplace=True)     
     test_x=test.drop([ 'user_id', 'sku_id'],axis=1)  
     x_train,x_test,y_train,y_test=data
-    regr=ensemble.RandomForestRegressor()
+    regr=ensemble.RandomForestRegressor(n_estimators=80)
+    
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
+    
     test['pred']=regr.predict(test_x)
     pred1=test[['user_id','sku_id','pred']]
     pred=pred1[pred1.pred==1]
@@ -30,6 +34,7 @@ def test_RandomForestRegressor(*data):
     print"tracing score:%f"%regr.score(x_train,y_train)
     print"testing score:%f"%regr.score(x_test,y_test)
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
+    data = get_from_jdata_csv(action)    
     x_train,x_test,y_train,y_test=load_data_regressiong(data)
     test_RandomForestRegressor(x_train,x_test,y_train,y_test)    

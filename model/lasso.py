@@ -2,12 +2,12 @@
 
 
 """
-author ： xiaodongdong@163.com
+author 锟斤拷 xiaodongdong@163.com
 time : 2017-04-30_18-38
 
-基于lasso的特征选择
-这个功能一般和其他的分类器一起使用
-或直接内置于其他分类器算中
+锟斤拷锟斤拷lasso锟斤拷锟斤拷锟斤拷选锟斤拷
+锟斤拷锟斤拷锟斤拷锟揭伙拷锟斤拷锟斤拷锟斤拷锟侥凤拷锟斤拷锟斤拷一锟斤拷使锟斤拷
+锟斤拷直锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
 
 """
 
@@ -37,7 +37,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier
 import xgboost as xgb 
 
-    #读取文件 
+    #锟斤拷取锟侥硷拷 
 def get_from_jdata_csv(csv):
     train =  pd.read_csv(csv,header=0)
     train.fillna(0,inplace=True)
@@ -78,7 +78,7 @@ def load_data(data):
     return data
 
 
-#检验不同的@值对于预测性能的影响，给出预测函数
+#锟斤拷锟介不同锟斤拷@值锟斤拷锟斤拷预锟斤拷锟斤拷锟杰碉拷影锟届，锟斤拷锟斤拷预锟解函锟斤拷
 def test_Lasso_alpha(*data):
     x_train,x_test,y_train,y_test = data
     alphas = [0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,20,50,100,200,500,1000]
@@ -87,7 +87,7 @@ def test_Lasso_alpha(*data):
         regr = linear_model.Lasso(alpha = alpha)
         regr.fit(x_train,y_train)
         scores.append(regr.score(x_test,y_test))
-    ##绘图：
+    ##锟斤拷图锟斤拷
     fig = plt.figure()
     ax = fig.add_subplot(1,1,1)
     ax.plot(alphas,scores)
@@ -100,7 +100,7 @@ def test_Lasso_alpha(*data):
 
 if __name__ == "__main__" :
     
-    print "开始运行了--runn Lasso.py"   
+    print "锟斤拷始锟斤拷锟斤拷锟斤拷--runn Lasso.py"   
    
     
     x_train,x_test,y_train,y_test = load_data(data)   
