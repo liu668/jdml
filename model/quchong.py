@@ -1,5 +1,5 @@
 import pandas as pd
 
-pred=pd.read_csv('C:/Users/Administrator/Desktop/forest_result.csv')
+pred=pd.read_csv('C:/Users/Administrator/Desktop/aboost_result.csv')
 pred=pred.drop_duplicates('user_id')[['user_id','sku_id']]
-pred.to_csv('C:/Users/Administrator/Desktop/forest_result.csv',index=False)
+pred.to_csv('C:/Users/Administrator/Desktop/aboost_result.csv',index=False)
