@@ -25,7 +25,7 @@ def test_RandomForestRegressor(*data):
     x_train,x_test,y_train,y_test=data
 
     #引入模型
-    regr=ensemble.RandomForestRegressor(n_estimators=1000)#指定决策树的数量
+    regr=ensemble.RandomForestRegressor(n_estimators=5000)#指定决策树的数量
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
     

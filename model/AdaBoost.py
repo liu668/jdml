@@ -22,7 +22,7 @@ def test_AdaBoostRegressor(*data):
     test.fillna(0,inplace=True)     
     test_x=test.drop([ 'user_id', 'sku_id'],axis=1)  
     x_train,x_test,y_train,y_test=data
-    regr=ensemble.AdaBoostRegressor(n_estimators=5000)
+    regr=ensemble.AdaBoostRegressor(n_estimators=5000,learning_rate=0.1,)
     
     regr.fit_intercept=True
     regr.fit(x_train,y_train)

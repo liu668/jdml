@@ -10,7 +10,7 @@ def get_from_jdata_csv(csv):
     train.fillna(0,inplace=True)
     
     return train
-#ÔØÈëÊı¾İ
+
 def load_data_regressiong(data):
     y_train=data.label1
     x_train=data.drop([ 'label1','label2', 'label3', 'user_id', 'sku_id'],axis=1)
@@ -24,24 +24,24 @@ def test_ElasticRegressor(*data):
     test_x=test.drop([ 'user_id', 'sku_id'],axis=1)  
     x_train,x_test,y_train,y_test=data
 
-    #ÒıÈëÄ£ĞÍ
-    regr=linear_model.ElasticNet(alpha=1)#Ö¸¶¨alphaµÄµÄÖµ
+
+    regr=linear_model.ElasticNet(alpha=0.01,l1_ratio=0.02)#Ö¸ï¿½ï¿½alphaï¿½Äµï¿½Öµ
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
     
-    #Ô¤²â²¢Êä³ö
+
     test['pred']=regr.predict(test_x)
     pred1=test[['user_id','sku_id','pred']]
     
-    pred=pred1.sort_values('pred',ascending=False)[:1500]
-    #Êä³ö½á¹û
-    pred.to_csv('./sub/forest_result.csv',index=False)
-    #Êä³öÔ¤²âµÃ·Ö
+    pred=pred1.sort_values('pred',ascending=False)[:1600]
+    #ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    pred.to_csv('./sub/elastic_result.csv',index=False)
+    #ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½Ã·ï¿½
     print"tracing score:%f"%regr.score(x_train,y_train)
     print"testing score:%f"%regr.score(x_test,y_test)
 
 if __name__ == '__main__':
-    #µ÷ÓÃº¯Êı
+    #ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½
     data = get_from_jdata_csv(action)    
     x_train,x_test,y_train,y_test=load_data_regressiong(data)
     test_ElasticRegressor(x_train,x_test,y_train,y_test)    
