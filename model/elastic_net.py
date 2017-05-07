@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import pandas as pd
 from sklearn import cross_validation
-from sklearn import ensemble
+from sklearn import linear_model
 
 action = "/home/javis/jd2017/jdata/all_train_new429.csv"
 
@@ -10,7 +10,7 @@ def get_from_jdata_csv(csv):
     train.fillna(0,inplace=True)
     
     return train
-#载入数据
+
 def load_data_regressiong(data):
     y_train=data.label1
     x_train=data.drop([ 'label1','label2', 'label3', 'user_id', 'sku_id'],axis=1)
@@ -18,30 +18,30 @@ def load_data_regressiong(data):
     
     return data
 
-def test_RandomForestRegressor(*data):
+def test_ElasticRegressor(*data):
     test=pd.read_csv("/home/javis/jd2017/jdata/all_test_new429.csv")
     test.fillna(0,inplace=True)     
     test_x=test.drop([ 'user_id', 'sku_id'],axis=1)  
     x_train,x_test,y_train,y_test=data
 
-    #引入模型
-    regr=ensemble.RandomForestRegressor(n_estimators=5000)#指定决策树的数量
+
+    regr=linear_model.ElasticNet(alpha=0.01,l1_ratio=0.02)#ָ��alpha�ĵ�ֵ
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
     
-    #预测并输出
+
     test['pred']=regr.predict(test_x)
     pred1=test[['user_id','sku_id','pred']]
     
-    pred=pred1.sort_values('pred',ascending=False)[:1500]
-    #输出结果
-    pred.to_csv('./sub/forest_result.csv',index=False)
-    #输出预测得分
+    pred=pred1.sort_values('pred',ascending=False)[:1600]
+    #������
+    pred.to_csv('./sub/elastic_result.csv',index=False)
+    #���Ԥ��÷�
     print"tracing score:%f"%regr.score(x_train,y_train)
     print"testing score:%f"%regr.score(x_test,y_test)
 
 if __name__ == '__main__':
-    #调用函数
+    #���ú���
     data = get_from_jdata_csv(action)    
     x_train,x_test,y_train,y_test=load_data_regressiong(data)
-    test_RandomForestRegressor(x_train,x_test,y_train,y_test)    
+    test_ElasticRegressor(x_train,x_test,y_train,y_test)    
