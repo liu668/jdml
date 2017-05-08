@@ -25,7 +25,7 @@ def test_RandomForestRegressor(*data):
     x_train,x_test,y_train,y_test=data
 
     #引入模型
-    regr=ensemble.RandomForestRegressor(n_estimators=5000)#指定决策树的数量
+    regr=ensemble.RandomForestRegressor(n_estimators=5000,max_features=275,max_depth=50,criterion='gini',min_samples_leaf=1)#设置参数
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
     
@@ -37,6 +37,7 @@ def test_RandomForestRegressor(*data):
     #输出结果
     pred.to_csv('./sub/forest_result.csv',index=False)
     #输出预测得分
+
     print"tracing score:%f"%regr.score(x_train,y_train)
     print"testing score:%f"%regr.score(x_test,y_test)
 

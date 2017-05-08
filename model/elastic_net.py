@@ -14,7 +14,7 @@ def get_from_jdata_csv(csv):
 def load_data_regressiong(data):
     y_train=data.label1
     x_train=data.drop([ 'label1','label2', 'label3', 'user_id', 'sku_id'],axis=1)
-    data= cross_validation.train_test_split(x_train,y_train,test_size=0.2,random_state=0)
+    data= cross_validation.train_test_split(x_train.values,y_train.values,test_size=0.2,random_state=0)
     
     return data
 
@@ -25,7 +25,7 @@ def test_ElasticRegressor(*data):
     x_train,x_test,y_train,y_test=data
 
 
-    regr=linear_model.ElasticNet(alpha=0.01,l1_ratio=0.02)#ָ��alpha�ĵ�ֵ
+    regr=linear_model.ElasticNet(alpha=0.001,l1_ratio=0.003)#指定参数
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
     
@@ -33,15 +33,16 @@ def test_ElasticRegressor(*data):
     test['pred']=regr.predict(test_x)
     pred1=test[['user_id','sku_id','pred']]
     
-    pred=pred1.sort_values('pred',ascending=False)[:1600]
-    #������
+    pred=pred1.sort_values('pred',ascending=False)[:1300]
+    #输出结果
     pred.to_csv('./sub/elastic_result.csv',index=False)
-    #���Ԥ��÷�
+    #输出预测得分
+    
     print"tracing score:%f"%regr.score(x_train,y_train)
     print"testing score:%f"%regr.score(x_test,y_test)
 
 if __name__ == '__main__':
-    #���ú���
+    #调用函数
     data = get_from_jdata_csv(action)    
     x_train,x_test,y_train,y_test=load_data_regressiong(data)
     test_ElasticRegressor(x_train,x_test,y_train,y_test)    
