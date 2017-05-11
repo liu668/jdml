@@ -25,7 +25,7 @@ def test_LogisticRegressor(*data):
     x_train,x_test,y_train,y_test=data
 
 
-    regr=linear_model.LogisticRegression(penalty='l2',max_iter=2000,C=1500.0,solver='sag',class_weight='balanced')
+    regr=linear_model.LogisticRegression(penalty='l2',max_iter=1000,C=500.0,solver='sag',class_weight='balanced')
     regr.fit_intercept=True
     regr.fit(x_train,y_train)
     
