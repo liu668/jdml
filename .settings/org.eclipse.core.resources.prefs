@@ -1,6 +1,8 @@
 eclipse.preferences.version=1
 encoding//DecisionTree/DecisionTree.py=utf-8
 encoding//DecisionTree/draw.py=utf-8
+encoding//before_k_user_brand/test_all_cate_action_feature.py=utf-8
+encoding//before_k_user_brand/train_all_cate_action_feature.py=utf-8
 encoding//before_k_user_brand/user.py=utf-8
 encoding//clean_data/select_user.py=utf-8
 encoding//comments_feature/comment_fet.py=UTF-8
@@ -12,4 +14,6 @@ encoding//model/decision_tree.py=UTF-8
 encoding//model/elastic_net.py=UTF-8
 encoding//model/forest.py=UTF-8
 encoding//model/logistic.py=UTF-8
+encoding//model/merge_comment.py=utf-8
+encoding//model/model_514.py=utf-8
 encoding//rate_feature/rate_feat.py=utf-8
