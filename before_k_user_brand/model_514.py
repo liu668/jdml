@@ -1,9 +1,9 @@
 # coding=utf-8
 import pandas as pd
 import lightgbm as lgb
-def read_data():
-    test = pd.read_csv('/home/javis/jd2017/jdata/test_add_comment.csv')
-    train = pd.read_csv('/home/javis/jd2017/jdata/train_add_comment.csv')
+def read_data():   
+	test = pd.read_csv('/home/javis/jd2017/lwb/jd1/jd/data/test_516.csv')
+    train = pd.read_csv('/home/javis/jd2017/lwb/jd1/jd/data/train_516.csv')
     return train,test
 train,test=read_data()
 print '--------------------------------------------------------'
@@ -29,10 +29,10 @@ def pipeline():
     pd.DataFrame(feat_imp).to_csv('./cache/importance_model_comment.csv')
     test.to_csv('./cache/test.csv', index=None)
 if __name__ == "__main__":
-    pipeline()
-test=pd.read_csv('test.csv')
+ pipeline()
+test=pd.read_csv('./cache/test.csv')
 submit=test[['user_id','sku_id','pred']]
-submit.to_csv('./cache/pred_prob_comment.csv',index=False)
+submit.to_csv('./sub/516/pred_prob_comment516.csv',index=False)
 def ismax(df):
     x=df['pred'].max()
     return df[df['pred']==x]
@@ -40,19 +40,19 @@ possible=submit.groupby('user_id')[['sku_id','pred']].apply(ismax).reset_index()
 possible = possible.sort_values('pred', ascending=False)
 possible=possible[:800]
 possible['user_id']=possible.user_id.astype(int)
-possible[['user_id','sku_id']].to_csv('./sub/submit_comment.csv',index=False)
+possible[['user_id','sku_id']].to_csv('./sub/516/submit_comment516.csv',index=False)
 
 #特征重要度排序
 importance=pd.read_csv('./cache/importance_model_comment.csv')
 importance.columns=['id','important']
 importance.to_csv('./cache/importance_model_comment.csv',index=False)
-train0 = pd.read_csv('/home/javis/jd2017/jdata/train_add_comment.csv')
+train0 = pd.read_csv('/home/javis/jd2017/lwb/jd1/jd/data/train516.csv')
 train_x = train0.drop(['label', 'user_id', 'sku_id'], axis=1)
 xyy=train_x.columns
 xyy=pd.DataFrame(xyy)
-xyy.to_csv('columns_name_model_1.csv')
-importance=pd.read_csv('./cache/importance_model_1.csv')
-col=pd.read_csv('./cache/columns_name_model_2.csv')
+xyy.to_csv('./cache/columns_name_model_1.csv')
+importance=pd.read_csv('./cache/importance_model_comment.csv')
+col=pd.read_csv('./cache/columns_name_model_1.csv')
 col.columns=['id','name']
 importance=pd.merge(importance,col,on='id')
-importance.to_csv('./cache/importace_comment_sort.csv',index=False)
+importance.to_csv('./sub/516/importace_comment_sort516.csv',index=False)
